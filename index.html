@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Precision Orbit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body { font-family: 'Inter', sans-serif; 
+        background: #F9FAFB; 
+        color: #333; 
+        line-height: 1.6; 
+    }
+
+    header h1, .hero h2, .feature h3, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+
+    h2 { color: #3F8EFC; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover { color: #3F8EFC; }
+
+    @media (max-width: 600px) {
+      nav { flex-direction: column; gap: 1rem; }
+    }
+
+    header {
+      padding: 5rem 1rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: #0070f3;
+    }
+
+    .hero {
+      background: #0B0D17;
+      color: #F9FAFB;
+      text-align: center;
+      padding: 6rem 1rem 4rem;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 1000px;
+      margin: 2.5rem auto;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2.5rem 1rem;
+      max-width: 1000px;
+      margin: 3rem auto;
+    }
+
+    .feature {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #3F8EFC;
+    }
+
+    .feature h3 {
+      margin-bottom: 0.75rem;
+      color: #3F8EFC;
+    }
+
+    .booking-widget {
+      background: #ffffff;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      margin: 2.5rem auto;
+      border-radius: 16px;
+      max-width: 1000px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .booking-widget form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .booking-widget select {
+      padding: 1rem;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #D9DBE1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .calendar div {
+        padding: 1rem 0.5rem;
+        background: #fff;
+        border-radius: 8px;
+        text-align: left;
+        height: 70px;
+        position: relative;
+        font-size: 0.95rem;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.2s ease;
+    }
+
+    .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        margin: 1rem 0;
+        font-weight: bold;
+        color: #666;
+    }
+
+.calendar-controls {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+    .calendar div:hover {
+        background: #e0f0ff;
+    }
+
+    .calendar div.selected {
+        background: #3F8EFC;
+        color: white;
+        font-weight: bold;
+    }
+
+    .calendar div::after {
+        content: attr(data-price);
+        font-size: 0.75rem;
+        color: #3F8EFC;
+        margin-top: 0.25rem;
+    }
+
+    .booking-widget input[type="email"] {
+      padding: 1rem;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #D9DBE1;
+      border-radius: 8px;
+    }
+
+    .booking-widget button, .cta button {
+  padding: 1rem 2rem;
+  background-color: #3F8EFC;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  min-width: 120px;
+}
+
+    .booking-widget button:hover, .cta button:hover {
+      background-color: #A259FF;
+    }
+
+    .cta {
+  background: #0B0D17;
+  color: #D9DBE1;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  margin: 2.5rem auto;
+  border-radius: 16px;
+  max-width: 1000px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.cta input[type="email"] {
+  padding: 1rem;
+  width: 75%;
+  max-width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 0.5rem;
+  margin-top: 1.5rem;
+}
+    footer {
+      background: #0B0D17;
+      color: #D9DBE1;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+  
+<body>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#features">Features</a>
+    <a href="#booking">Booking</a>
+    <a href="#cta">Early Access</a>
+  </nav>
+
+  <header>
+    <h1>Precision Orbit</h1>
+  </header>
+
+  <section class="hero" id="hero">
+    <h2>Flexible, On-Demand Satellite Launches</h2>
+    <p>We're building a small, fully reusable rocket designed to meet unmet launch demand—with a subscription-based model and airline-style booking experience.</p>
+  </section>
+
+  <section class="features" id="features">
+    <div class="feature">
+      <i class="fas fa-rocket"></i>
+      <h3>Flexible Launch Options</h3>
+      <p>Book by window or exact date—whatever works for your mission. Just like choosing a flight.</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-sync-alt"></i>
+      <h3>Subscription Model</h3>
+      <p>Predictable costs, reserved capacity, and priority access for subscribers.</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-laptop-code"></i>
+      <h3>Online Booking</h3>
+      <p>Book launches in minutes—not weeks—with a modern, easy-to-use web platform.</p>
+    </div>
+  </section>
+
+  <section class="booking-widget" id="booking">
+    <h2>Book Your Launch</h2>
+    
+    <div class="calendar" id="calendar"></div>
+    
+    <button style="margin-top: 1rem;" onclick="submitBooking()">Continue</button>
+  </section>
+  
+
+  <section class="cta" id="cta">
+    <h2>Subscribe for Updates</h2>
+    <p>Stay in the loop with the latest news and booking availability from Precision Orbit.</p>
+    <form>
+      <input type="email" placeholder="Enter your email" required />
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <footer>
+    &copy; 2025 Precision Orbit. All rights reserved.
+  </footer>
+
+  <script>
+    const calendar = document.getElementById('calendar');
+    const days = [' ', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    const prices = [ 
+      ['Sat, May 01', '', '10200', '9800', '9800', '9750', '9700', '9650'],
+      ['Sun, May 02', '', '9950', '9750', '9700', '9650', '9600', '9550'],
+      ['Mon, May 03', '', '9800', '9700', '9650', '9600', '9550', '9500'],
+      ['Tue, May 04', '', '9800', '9650', '9600', '9550', '9500', '9450'],
+      ['Wed, May 05', 'LOWEST', '9700', '9600', '9500', '9450', '9400', '9350'],
+      ['Thu, May 06', '', '9500', '9450', '9400', '9350', '9300', '9250'],
+      ['Fri, May 07', '', '9450', '9400', '9350', '9300', '9250', '9200']
+    ];
+  
+    function renderCalendar() {
+      days.forEach(day => {
+        const div = document.createElement('div');
+        div.classList.add('header');
+        div.textContent = day;
+        calendar.appendChild(div);
+      });
+
+      prices.forEach(row => {
+        row.forEach((item, index) => {
+          const div = document.createElement('div');
+          if(index === 0){
+            div.classList.add('date');
+            div.textContent = item;
+          } else if(index === 1 && item === 'LOWEST'){
+            div.classList.add('lowest-price');
+            div.textContent = item;
+          } else {
+            div.textContent = item ? `$${item}` : '-';
+            div.onclick = () => div.classList.toggle('selected');
+          }
+          calendar.appendChild(div);
+        });
+      });
+    }
+    
+    function submitBooking() {
+      alert("Your launch is booked! We'll be in touch.");
+    }
+  
+    renderCalendar();
+  
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        alert("Your launch is booked! We'll be in touch.");
+      });
+    });
+  </script>
+</body>
+</html>
